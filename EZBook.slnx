@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EZBook.Api/EZBook.Api.csproj" />
+  <Project Path="EZBook.Application/EZBook.Application.csproj" />
+  <Project Path="EZBook.Domain/EZBook.Domain.csproj" />
+  <Project Path="EZBook.Infrastructure/EZBook.Infrastructure.csproj" />
+</Solution>
