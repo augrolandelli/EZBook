@@ -7,5 +7,7 @@ namespace EZBook.Domain.IRepositories
 {
     public interface IClienteRepository : IBaseRepository<Cliente>
     {
+        Task<Cliente?> GetClientById(Guid id);
+        Task<Cliente?> GetClientByNumber(string telefono);
     }
 }

@@ -7,5 +7,6 @@ namespace EZBook.Domain.IRepositories
 {
     public interface IUsuarioServicioRepository : IBaseRepository<UsuarioServicio>
     {
+        Task<IEnumerable<Servicio>> GetServicesByUserId(Guid id);
     }
 }

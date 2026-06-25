@@ -7,5 +7,6 @@ namespace EZBook.Domain.IRepositories
 {
     public interface IDiaHorarioRepository : IBaseRepository<DiaHorario>
     {
+        Task<IEnumerable<DiaHorario>> GetDiaHorariosByUserId(Guid id);
     }
 }
