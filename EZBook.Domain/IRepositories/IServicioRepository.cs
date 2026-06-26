@@ -7,5 +7,6 @@ namespace EZBook.Domain.IRepositories
 {
     public interface IServicioRepository : IBaseRepository<Servicio>
     {
+        
     }
 }

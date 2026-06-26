@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EZBook.Application.DTOs;
+using EZBook.Domain.Entities;
+using EZBook.Domain.IRepositories;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +11,41 @@ namespace EZBook.Api.Controllers
     [ApiController]
     public class ReservaController : ControllerBase
     {
-        // GET: api/<ReservaController>
+        private readonly IReservaRepository _resRepo;
+        private readonly IUnitOfWork _uow;
+        public ReservaController(IReservaRepository resRepo, IUnitOfWork uow)
+        {
+            _resRepo = resRepo;
+            _uow = uow;
+        }
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<Reserva>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await _resRepo.GetAllAsync();
         }
 
-        // GET api/<ReservaController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<Reserva?> Get(Guid id)
         {
-            return "value";
+            return await _resRepo.GetById(id);
         }
 
-        // POST api/<ReservaController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CreateReservaRequest reserva)
         {
-        }
+            Reserva res = new Reserva
+            {
+                UsuarioId = reserva.UsuarioId,
+                ServicioId = reserva.ServicioId,
+                ClienteId = reserva.ClienteId,
+                FechaHoraInicio = reserva.FechaHoraInicio,
+                FechaHoraFin = reserva.FechaHoraFin,
+                Estado = 0
+            };
 
-        // PUT api/<ReservaController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ReservaController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            await _resRepo.AddAsync(res);
+            await _uow.SaveChangesAsync();
+            return Ok();
         }
     }
 }

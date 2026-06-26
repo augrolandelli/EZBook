@@ -7,5 +7,6 @@ namespace EZBook.Domain.IRepositories
 {
     public interface IReservaRepository : IBaseRepository<Reserva>
     {
+        Task<Reserva?> GetById(Guid id);
     }
 }
