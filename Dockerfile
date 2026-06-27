@@ -1,26 +1,36 @@
-# 1. Etapa de compilación (usamos el SDK oficial de .NET 10)
+# ==========================================
+# 1. ETAPA DE COMPILACIÓN (Usa el SDK pesado)
+# ==========================================
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-WORKDIR /source
+WORKDIR /src
 
-# Copiamos todo tu código al contenedor
-COPY . .
-
-# Restauramos las dependencias
+# Truco de rendimiento: Copiamos SOLO el .csproj primero.
+# Esto le dice a Docker que guarde las dependencias descargadas en caché.
+# Si solo cambiás código de C#, este paso se lo saltea y compila al instante.
+COPY ["EZBook.Api/EZBook.Api.csproj", "EZBook.Api/"]
 RUN dotnet restore "EZBook.Api/EZBook.Api.csproj"
 
-# Compilamos en modo Release
-RUN dotnet publish "EZBook.Api/EZBook.Api.csproj" -c Release -o /app/publish
+# Ahora sí, copiamos el resto de los archivos
+COPY . .
 
-# 2. Etapa de producción (usamos solo el Runtime para que sea súper ligero)
+# Nos paramos en la carpeta del proyecto y publicamos
+WORKDIR "/src/EZBook.Api"
+RUN dotnet publish "EZBook.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# ==========================================
+# 2. ETAPA DE PRODUCCIÓN (Imagen liviana y segura)
+# ==========================================
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
-# Por defecto, .NET moderno usa el puerto 8080
+# .NET por defecto en Linux expone el puerto 8080 para usuarios no root
 EXPOSE 8080
-ENV ASPNETCORE_HTTP_PORTS=8080
 
-# Traemos los archivos compilados de la etapa anterior
+# Seguridad: Ejecutamos la app con un usuario sin privilegios (no root)
+USER app
+
+# Copiamos ÚNICAMENTE los archivos compilados (.dll) de la etapa anterior
 COPY --from=build /app/publish .
 
-# Comando de inicio
-ENTRYPOINT ["dotnet", "EZBook.API.dll"]
+# Comando de arranque de la aplicación
+ENTRYPOINT ["dotnet", "EZBook.Api.dll"]
