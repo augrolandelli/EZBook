@@ -6,10 +6,10 @@ WORKDIR /source
 COPY . .
 
 # Restauramos las dependencias
-RUN dotnet restore "EZBook.API/EZBook.API.csproj"
+RUN dotnet restore "EZBook.Api/EZBook.Api.csproj"
 
 # Compilamos en modo Release
-RUN dotnet publish "EZBook.API/EZBook.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "EZBook.Api/EZBook.Api.csproj" -c Release -o /app/publish
 
 # 2. Etapa de producción (usamos solo el Runtime para que sea súper ligero)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
