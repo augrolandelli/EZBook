@@ -91,5 +91,13 @@ namespace EZBook.Api.Controllers
             await _uow.SaveChangesAsync();
             return Ok(diaHorario);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest login)
+        {
+            var user = await _userRepo.GetUsuarioByEmail(login.Email);
+            string token = user.Nombre + "_" + user.Rol;
+            return Ok(token);
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace EZBook.Domain.IRepositories
     public interface IUsuarioRepository : IBaseRepository<Usuario>
     {
         Task<Usuario?> GetUsuarioById(Guid id);
+        Task<Usuario?> GetUsuarioByEmail(string email);
     }
 }

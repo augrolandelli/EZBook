@@ -19,5 +19,10 @@ namespace EZBook.Infrastructure.Persistence.Repositories
         {
             return await _context.Usuarios.FirstOrDefaultAsync(x=>x.Id == id);
         }
+
+        public async Task<Usuario?> GetUsuarioByEmail(string email)
+        {
+            return await _context.Usuarios.FirstOrDefaultAsync(x=>x.Email == email);
+        }
     }
 }

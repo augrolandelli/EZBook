@@ -50,6 +50,14 @@ The EZBook backend is designed for managing an aesthetics or hairdressing busine
       "password": "contraseña123",
       "rol": 0 (Administrador), 1(Gerente), 2(Empleado)
     }
+8. Login de usuario
+  - Metodo POST a api/usuario/login
+  - Cuerpo JSON  de peticion: 
+    {
+      "email": "carlos.ramirez@example.com",
+      "password": "contraseña123"
+    }
+  - Devuelve token de estilo: "nombreUsuario/rol"
 
 - **/api/reserva**: Manage reservs
 
