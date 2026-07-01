@@ -38,8 +38,8 @@ namespace EZBook.Api.Controllers
                 UsuarioId = reserva.UsuarioId,
                 ServicioId = reserva.ServicioId,
                 ClienteId = reserva.ClienteId,
-                FechaHoraInicio = reserva.FechaHoraInicio,
-                FechaHoraFin = reserva.FechaHoraFin,
+                FechaHoraInicio = DateTime.SpecifyKind(reserva.FechaHoraInicio, DateTimeKind.Utc),
+                FechaHoraFin = DateTime.SpecifyKind(reserva.FechaHoraFin, DateTimeKind.Utc),
                 Estado = 0
             };
 
