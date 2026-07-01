@@ -96,7 +96,7 @@ namespace EZBook.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
             var user = await _userRepo.GetUsuarioByEmail(login.Email);
-            string token = user.Nombre + "_" + user.Rol;
+            string token = user.Id + "_" + user.Nombre + "_" + user.Rol;
             return Ok(token);
         }
     }
