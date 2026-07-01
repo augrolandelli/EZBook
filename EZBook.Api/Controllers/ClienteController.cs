@@ -42,7 +42,7 @@ namespace EZBook.Api.Controllers
 
             await _clienteRepo.AddAsync(client);
             await _uow.SaveChangesAsync();
-            return Ok();
+            return Ok(client);
         }
     }
 }
